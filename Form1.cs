@@ -283,9 +283,5 @@ namespace IBKR_Algo
             ibClient.ClientSocket.eDisconnect();
             ibClient.ClientSocket.Close();
         }
-
-        private void timer2_Tick(object sender, EventArgs e)
-        {
-        }
     }
 }

@@ -73,7 +73,6 @@
             dataGridViewTextBoxColumn7 = new DataGridViewTextBoxColumn();
             tbTime = new TextBox();
             timer1 = new System.Windows.Forms.Timer(components);
-            timer2 = new System.Windows.Forms.Timer(components);
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
@@ -467,11 +466,6 @@
             timer1.Interval = 250;
             timer1.Tick += timer1_Tick;
             // 
-            // timer2
-            // 
-            timer2.Interval = 5000;
-            timer2.Tick += timer2_Tick;
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -559,6 +553,5 @@
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn6;
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn7;
-        private System.Windows.Forms.Timer timer2;
     }
 }
