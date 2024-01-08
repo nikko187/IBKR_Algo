@@ -28,6 +28,7 @@ namespace IBKR_Algo
         private double theAsk;
         private double last;
         IBApi.Contract contract = new IBApi.Contract();
+        BindingList<fiveMinOHLC> _fiveMinOHLC;
         DateTime now;
 
         public Form1()
@@ -36,7 +37,11 @@ namespace IBKR_Algo
 
             ibClient = new IBKR_Algo.EWrapperImpl();
         }
-
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            _fiveMinOHLC = new BindingList<fiveMinOHLC>();
+            dataGridView5min.DataSource = _fiveMinOHLC;
+        }
         private void btnConnect_Click(object sender, EventArgs e)
         {
             ibClient.ClientSocket.eConnect("", 7497, 10);
@@ -79,8 +84,6 @@ namespace IBKR_Algo
             ibClient.ClientSocket.reqHistoricalData(2, contract, "", "1 D", "5 mins", "TRADES", 0, 1, true, null);
             timer1.Enabled = true;
             timer1.Start();
-            timer2.Enabled = true;
-            timer2.Start();
         }
 
         private void btnStop_Click(object sender, EventArgs e)
@@ -227,10 +230,10 @@ namespace IBKR_Algo
             }
             else
             {
-                dataGridView5min.Rows.Insert(0, bar.Time, bar.Open, bar.High, bar.Low, bar.Close, bar.Volume, bar.WAP);
+                _fiveMinOHLC.Insert(0, new fiveMinOHLC(bar.Time, bar.Open, bar.High, bar.Low, bar.Close, bar.Volume, bar.WAP));
             }
         }
-        
+
         delegate void Historical5minDataUpdateCallback(Bar bar);
         public void Historical5minDataUpdate(Bar bar)
         {
@@ -241,7 +244,7 @@ namespace IBKR_Algo
             }
             else
             {
-                dataGridView5min.Rows[0].SetValues(bar.Time, bar.Open, bar.High, bar.Low, bar.Close, bar.Volume, bar.WAP); 
+                //dataGridView5min.Rows[0].SetValues(bar.Time, bar.Open, bar.High, bar.Low, bar.Close, bar.Volume, bar.WAP);
             }
         }
         delegate void YdayHLCallback();
@@ -264,6 +267,7 @@ namespace IBKR_Algo
                     lbData.Items.Insert(0, "HOD: " + hod);
                     lbData.Items.Insert(0, "LOD: " + lod);
                     lbData.Items.Insert(0, "PrevClose: " + closePrice);
+                    lbData.Items.Insert(0, "OpenTick: " + openTick);
                 }
             }
             else
