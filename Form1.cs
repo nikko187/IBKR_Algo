@@ -83,7 +83,7 @@ namespace IBKR_Algo
             ibClient.ClientSocket.reqHistoricalData(1, contract, "", "5 D", "1 day", "TRADES", 0, 1, true, null);
             ibClient.ClientSocket.reqHistoricalData(2, contract, "", "1 D", "5 mins", "TRADES", 0, 1, true, null);
             timer1.Enabled = true;
-            timer1.Start();
+            timer1.Start();           
         }
 
         private void btnStop_Click(object sender, EventArgs e)
@@ -235,7 +235,7 @@ namespace IBKR_Algo
         }
 
         delegate void Historical5minDataUpdateCallback(Bar bar);
-        public void Historical5minDataUpdate(Bar bar)
+        public async void Historical5minDataUpdate(Bar bar)
         {
             if (dataGridView5min.InvokeRequired)
             {
@@ -244,7 +244,16 @@ namespace IBKR_Algo
             }
             else
             {
-                //dataGridView5min.Rows[0].SetValues(bar.Time, bar.Open, bar.High, bar.Low, bar.Close, bar.Volume, bar.WAP);
+                dataGridView5min.Rows[0].SetValues(bar.Time, bar.Open, bar.High, bar.Low, bar.Close, bar.Volume, bar.WAP);
+                if (now.Second < 1) 
+                {
+                    if (now.Minute == 0 || now.Minute == 5 || now.Minute == 10 || now.Minute == 15 || now.Minute == 20 || now.Minute == 25 || now.Minute == 30 || now.Minute == 35 || now.Minute == 40 || now.Minute == 45 || now.Minute == 50 || now.Minute == 55)
+                    {
+                        _fiveMinOHLC.Clear();
+                        ibClient.ClientSocket.cancelHistoricalData(2);
+                        ibClient.ClientSocket.reqHistoricalData(2, contract, "", "1 D", "5 mins", "TRADES", 0, 1, true, null);
+                    }
+                }
             }
         }
         delegate void YdayHLCallback();
